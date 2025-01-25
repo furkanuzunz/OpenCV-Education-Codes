@@ -29,3 +29,4 @@ print(x[1,:]) # Bu ifade, x dizisinin 1. satırını tarar ve tüm sütunların�
 
 ## yani ;     x[:, n] ifadesi tüm satirlari tarar ve n'inci sütundakileri alır. böylelikle sütunları çekmiş oluruz.
 ##            x[m ,:] ifadesi ise m'inci satiri tarar ve tüm sütunları alır. böylelikle satırları çekmiş oluruz.
+
