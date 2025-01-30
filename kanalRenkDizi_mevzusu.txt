@@ -98,4 +98,3 @@ img[:, :, 2]: Blue (Mavi) kanalını seçer.
 İkisi birbiriyle ilişkilidir: [255, 0, 0] gibi bir pikselin Red değerine pixel[0] veya img[x, y, 0] ile erişebilirsiniz.
 
 Yani, [255, 0, 0] saf kırmızı bir pikseli temsil ederken, [:, :, 0] tüm piksellerin Red (Kırmızı) kanalını seçer. 😊
-
