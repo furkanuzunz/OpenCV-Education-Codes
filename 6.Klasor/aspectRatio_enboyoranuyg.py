@@ -28,6 +28,9 @@ def resizeWithAspectRatio(img,width = None,height = None,inter = cv2.INTER_AREA)
     return cv2.resize(img,yeniBoyut,interpolation=inter)
 
 img = cv2.imread(path)
+# cv2.imread(path): Belirtilen dosya yolundaki resmi okur ve bir NumPy dizisi olarak yükler. 
+# Bu dizi, görüntüyü piksel matrisi şeklinde temsil eder.   
+
 img1 = resizeWithAspectRatio(img,None,600,cv2.INTER_AREA)
 
 cv2.imshow("original",img)
