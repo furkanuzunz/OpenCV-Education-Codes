@@ -113,7 +113,7 @@ img[0,0] = (255,255,255) # sifira sifir koordinatidaki PİKSELE eristik resmin.
 # Örneğin: img[0, 0] = (255, 255, 255) → (0, 0) pikselini beyaz yapar.
 # img[:, :, 0]: Tüm piksellerin Red (Kırmızı) kanalına erişir veya değiştirir.
 # Örneğin: img[:, :, 0] = 255 → Tüm piksellerin Kırmızı kanalını maksimum (255) yapar.
-
+blue = img[420,500,0]
 
 Eğer bir görüntü siyah-beyaz ise, bu görüntüyü temsil eden NumPy dizisinin boyutu tek kanallı olmalıdır:
 Örneğin: (yükseklik, genişlik)
@@ -122,3 +122,7 @@ img[0, 0] = 255  # Beyaz
 img[0, 1] = 200  # Açık gri
 img[0, 2] = 150  # Orta gri
 img[0, 3] = 15   # Koyu gri
+
+#herhangi bir koordinattaki mesela sadece mavi renk degerine nasıl erişirim.
+blue = img[420,500,0]#420 ye 500 pikselindeki mavi deger(sıfırncı indeksi)
+#biz mesela yukarda bgr degerleri icin ciktimiz [150,154,145] cikti.sifirnci indeks bize mavi degerini verir.
