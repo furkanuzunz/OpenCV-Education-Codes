@@ -1,0 +1,240 @@
+1-Temel Dönüşüm Matrisi Yapısı
+Afin dönüşüm matrisi şu şekildedir:
+| a  b  tx |
+| c  d  ty |
+a, b, c, d: Piksellerin dönme, ölçeklendirme veya eğme gibi işlemlerini kontrol eder.
+tx, ty: Kaydırma miktarlarını belirtir.
+
+2-Çapraz 1'ler Ne Anlama Gelir?
+Eğer matris şu şekilde tanımlanmışsa:
+
+| 1  0  tx |
+| 0  1  ty |
+
+Bu, aşağıdaki anlamlara gelir:
+
+a = 1 ve d = 1: Resmin yatayda (a) ve dikeyde (d) ölçeklendirmenin olmadığını gösterir. Yani resim orijinal boyutunda kalır.
+b = 0 ve c = 0: Eğme veya döndürme olmadığını gösterir.
+tx ve ty: Sadece kaydırma (translation) işlemini belirtir.
+Bu nedenle, çapraz 1'ler olan bir matris genellikle yalnızca kaydırma içerir.
+
+
+
+
+
+3-Çapraz Elemanlar Değiştirilirse Ne Olur?
+Eğer çapraz elemanlar değiştirilirse, farklı dönüşümler elde edilebilir. İşte bazı örnekler:
+
+a) Ölçeklendirme (Scaling)
+Resmi yatayda 2 kat, dikeyde 0.5 kat ölçeklendirmek için:
+
+
+| 2   0   0 |
+| 0  0.5  0 |
+
+
+a = 2: Yatay ölçeklendirme (genişletme).
+d = 0.5: Dikey ölçeklendirme (daraltma).
+Burada çapraz elemanlar (a ve d) değiştirilmiştir. Bu, ölçeklendirme işlemini tetikler.
+
+b) Döndürme (Rotation)
+Resmi saat yönünün tersine 90 derece döndürmek için:
+
+| cosθ  -sinθ  0 |
+| sinθ   cosθ  0 |
+
+Matematiksel olarak:
+
+cos90 = 0
+sin90 = 1
+Bu durumda matris şu hale gelir:
+| 0  -1  0 |
+| 1   0  0 |
+
+Burada çapraz elemanlar (a ve d) artık 1 değildir. Bu, döndürme işlemini tetikler.
+
+c) Eğme (Shearing)
+Resmi yatayda eğmek için:
+| 1  0.5  0 |
+| 0   1   0 |
+
+b = 0.5: Yatay eğme miktarını belirtir.
+Çapraz elemanlar (a ve d) hala 1'dir, ancak b değeri değiştirilmiştir. Bu, eğme işlemini tetikler.
+
+
+
+
+4. Çapraz 1'ler ve Dönüşüm Türü Arasındaki İlişki
+Çapraz elemanlar (a ve d) ile dönüşüm türü arasındaki ilişki şu şekilde özetlenebilir:
+
+a = 1 ,d = 1
+Yalnızca Kaydırma (Translation)
+Resim yalnızca yatayda ve dikeyde kaydırılır. Ölçeklendirme veya döndürme yoktur.
+
+a ≠ 1,d ≠ 1
+Ölçeklendirme (Scaling)
+Resim yatayda ve/veya dikeyde ölçeklenir.
+
+a = cosθ, d = cosθ
+Döndürme (Rotation)
+Resim bir açıyla döndürülür.
+
+b ≠ 0 veya c ≠ 0
+Eğme (Shearing)
+Resim eğilir (yatayda veya dikeyde).
+
+
+5. Örnek: Çapraz 1'ler ile Ölçeklendirme ve Döndürme
+a) Ölçeklendirme
+Eğer çapraz elemanlar değiştirilirse, ölçeklendirme işlemi yapılır:
+Matris = np.float32([[2, 0, 0], [0, 0.5, 0]])
+a = 2: Yatay ölçeklendirme (genişletme).
+d = 0.5: Dikey ölçeklendirme (daraltma).
+
+
+b) Döndürme
+Eğer çapraz elemanlar trigonometrik fonksiyonlarla değiştirilirse, döndürme işlemi yapılır:
+import math
+
+aci = 90  # Derece cinsinden açı
+radyan = math.radians(aci)  # Dereceyi radyana çevir
+Matris = np.float32([
+    [math.cos(radyan), -math.sin(radyan), 0],
+    [math.sin(radyan), math.cos(radyan), 0]
+])
+
+cos ve sin fonksiyonları, döndürme açısını hesaplar.
+
+
+6. Sonuç
+Çapraz 1'ler olan bir matris genellikle yalnızca kaydırma içerir. Ancak çapraz elemanlar değiştirilirse:
+
+Ölçeklendirme: Resim yatayda veya dikeyde ölçeklenir.
+Döndürme: Resim bir açıyla döndürülür.
+Eğme: Resim eğilir.
+Özetle:
+
+Çapraz 1'ler (a = 1, d = 1), dönüşümün yalnızca kaydırma içerdiğini gösterir.
+Çapraz elemanlar değiştirilirse, ölçeklendirme, döndürme veya eğme gibi farklı dönüşümler elde edilebilir.
+
+
+
+--------------------------------------------------------------------------
+
+Matrisin Yapısı ve Çapraz Elemanlar
+Afin dönüşüm matrisi şu şekildedir:
+
+Copy
+1| a  b  tx |
+2| c  d  ty |
+a, b, c, d: Piksellerin dönme, ölçeklendirme veya eğme gibi işlemlerini kontrol eder.
+tx, ty: Kaydırma miktarlarını belirtir.
+Burada:
+
+Çapraz elemanlar (a ve d) : Resmin yatayda (a) ve dikeyde (d) nasıl değişeceğini kontrol eder.
+Diğer elemanlar (b ve c) : Eğme veya döndürme gibi işlemleri kontrol eder.
+
+
+
+
+2. Neden Çapraz Elemanlara Bakıyoruz?
+Çapraz elemanlar (a ve d), dönüşümün doğrusal bileşenlerini temsil eder. Bu bileşenler, resmin boyutunu ve şeklini doğrudan etkiler. İşte neden çapraz elemanlara bakıyoruz:
+
+a) Ölçeklendirme (Scaling)
+a ve d, resmin yatayda ve dikeyde ne kadar ölçekleneceğini belirtir.
+Eğer a = 1 ve d = 1 ise, resim orijinal boyutunda kalır.
+Eğer a > 1 veya d > 1 ise, resim o yönde genişler.
+Eğer a < 1 veya d < 1 ise, resim o yönde daralır.
+Örnek:
+
+python
+Copy
+1
+Matris = np.float32([[2, 0, 0], [0, 0.5, 0]])
+a = 2: Yatayda 2 kat genişletme.
+d = 0.5: Dikeyde yarıya indirme.
+b) Döndürme (Rotation)
+Döndürme işlemi, trigonometrik fonksiyonlarla ifade edilir:
+a = cosθ
+d = cosθ
+b = -sinθ
+c = sinθ
+Bu durumda, çapraz elemanlar (a ve d) döndürme açısını (θ) kontrol eder.
+
+Örnek:
+
+python
+Copy
+1
+2
+3
+4
+5
+6
+7
+8
+⌄
+import math
+
+aci = 90  # Derece cinsinden açı
+radyan = math.radians(aci)
+Matris = np.float32([
+    [math.cos(radyan), -math.sin(radyan), 0],
+    [math.sin(radyan), math.cos(radyan), 0]
+])
+a = cosθ ve d = cosθ: Döndürme işlemini tanımlar.
+c) Kaydırma (Translation)
+Kaydırma işlemi, tx ve ty değerleriyle kontrol edilir.
+Ancak, kaydırma sırasında çapraz elemanlar (a ve d) genellikle 1 olarak kalır. Bu, resmin boyutunun değişmediğini gösterir.
+3. Çapraz Elemanlar Dönüşüm Türünü Belirler
+Çapraz elemanlar (a ve d), dönüşümün türünü ve özelliklerini belirler. İşte bazı örnekler:
+
+a = 1
+,
+d = 1
+Yalnızca Kaydırma (Translation)
+Resim yalnızca yatayda ve dikeyde kaydırılır. Ölçeklendirme veya döndürme yoktur.
+a ≠ 1
+,
+d ≠ 1
+Ölçeklendirme (Scaling)
+Resim yatayda ve/veya dikeyde ölçeklenir.
+a = cosθ
+,
+d = cosθ
+Döndürme (Rotation)
+Resim bir açıyla döndürülür.
+
+4. Diğer Elemanlar Ne İşe Yarar?
+Çapraz olmayan elemanlar (b ve c), dönüşümün daha karmaşık yönlerini kontrol eder:
+
+Eğme (Shearing): b veya c değeri değiştirilirse, resim eğilir.
+Döndürme: b = -sinθ ve c = sinθ değerleri, döndürme işlemini tamamlar.
+Ancak, temel ölçeklendirme ve döndürme işlemleri genellikle çapraz elemanlar tarafından kontrol edilir.
+
+5. Özet
+Çapraz elemanlara bakmamızın nedeni, bu elemanların dönüşümün temel doğrusal bileşenlerini (ölçeklendirme ve döndürme) kontrol etmesidir. Diğer elemanlar (b ve c) ise daha karmaşık dönüşümler (eğme veya döndürme) için kullanılır.
+
+Özetle:
+
+Çapraz elemanlar (a ve d), resmin boyutunu ve şeklini doğrudan etkiler.
+Bu elemanlar, ölçeklendirme ve döndürme gibi temel dönüşümleri tanımlar.
+Diğer elemanlar (b ve c), eğme veya döndürme gibi daha karmaşık dönüşümleri kontrol eder.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
