@@ -1,0 +1,70 @@
+1.örnek köşeler dizisi
+corners = np.array([[[100, 200]], [[300, 400]], [[500, 600]]], dtype=np.float32)
+
+Bu satırda, üç adet köşe koordinatı içeren bir NumPy dizisi oluşturuluyor:
+
+İlk köşe: [100, 200]
+İkinci köşe: [300, 400]
+Üçüncü köşe: [500, 600]
+Her bir köşe, iki boyutlu bir dizi içinde saklanıyor ([[x, y]]). Bu, cv2.goodFeaturesToTrack() fonksiyonu tarafından döndürülen veri yapısı ile aynıdır.
+
+2. Köşelerin Dönüştürülmesi: np.int64(corners)
+corners = np.int64(corners)
+Bulunan köşeler, float32 türüne dönüştürülür. Ancak, çember çizmek için (cv2.circle()) tam sayılar (int) gereklidir. Bu nedenle, corners dizisini np.int64 ile tam sayıya dönüştürüyoruz.
+
+3. For Döngüsü: Köşeleri İşaretleme
+for corner in corners:
+    x, y = corner.ravel()
+    print(f"Köşe koordinatları: ({x}, {y})")
+    # cv2.circle(img1, (x, y), 3, (0, 0, 255), -1)  # Çember çiz
+
+    a. Döngü İçindeki corner Değişkeni
+    for corner in corners: satırında, corners dizisi içindeki her bir köşe elemanı corner değişkenine atanır. Her bir corner, şu şekilde bir dizi içerir:
+    [[x, y]]
+    Burada x ve y, köşenin koordinatlarıdır.
+
+    b. corner.ravel() Fonksiyonu
+corner.ravel() fonksiyonu, corner dizisini tek boyutlu hale getirir. Örneğin:
+
+    corner = [[100, 200]]  # İki boyutlu bir dizi
+corner.ravel()         # Tek boyutlu hale getiriliyor: [100, 200]
+    Bu işlem, x ve y değerlerini kolayca erişebilmemiz için yapılır. Eğer ravel() fonksiyonu kullanılmazsa, corner hala iki boyutlu bir dizi olarak kalır ve x ve y değerlerine doğrudan erişilemez.
+    c. x, y = corner.ravel() Satırı
+Bu satırda, corner.ravel() fonksiyonu ile elde edilen tek boyutlu diziden x ve y değerlerini ayrıştırıyoruz:
+    x, y = corner.ravel()
+    Sonuçta, x ve y değişkenleri, köşenin koordinatlarını tutar.
+
+    d. Çember Çizme: cv2.circle()
+Her bir köşe için cv2.circle() fonksiyonu çağrılır ve çember çizilir:
+    cv2.circle(img1, (x, y), 3, (0, 0, 255), -1)
+    Bu satırda:
+
+img1: Çember çizilecek görüntü.
+(x, y): Çemberin merkez koordinatları.
+3: Çemberin yarıçapı.
+(0, 0, 255): Kırmızı renk.
+-1: Çember dolu.
+
+4. Adım Adım Anlatım
+Şimdi, for döngüsünün nasıl çalıştığını adım adım açıklayalım:
+
+a. İlk Iterasyon
+    corner = [[[100, 200]]]
+corner.ravel() çağrıldığında, [[100, 200]] tek boyutlu hale getirilir: [100, 200].
+x, y = corner.ravel() satırı çalıştığında, x = 100 ve y = 200 olur.
+print(f"Köşe koordinatları: ({x}, {y})") satırı çalıştığında, ekrana "Köşe koordinatları: (100, 200)" yazdırılır.
+cv2.circle(img1, (x, y), 3, (0, 0, 255), -1) satırı çalıştığında, (100, 200) noktasına kırmızı bir çember çizilir.
+
+b. İkinci Iterasyon
+    corner = [[[300, 400]]]
+corner.ravel() çağrıldığında, [[300, 400]] tek boyutlu hale getirilir: [300, 400].
+x, y = corner.ravel() satırı çalıştığında, x = 300 ve y = 400 olur.
+print(f"Köşe koordinatları: ({x}, {y})") satırı çalıştığında, ekrana "Köşe koordinatları: (300, 400)" yazdırılır.
+cv2.circle(img1, (x, y), 3, (0, 0, 255), -1) satırı çalıştığında, (300, 400) noktasına kırmızı bir çember çizilir.
+
+c. Üçüncü Iterasyon
+    corner = [[[500, 600]]]
+corner.ravel() çağrıldığında, [[500, 600]] tek boyutlu hale getirilir: [500, 600].
+x, y = corner.ravel() satırı çalıştığında, x = 500 ve y = 600 olur.
+print(f"Köşe koordinatları: ({x}, {y})") satırı çalıştığında, ekrana "Köşe koordinatları: (500, 600)" yazdırılır.
+cv2.circle(img1, (x, y), 3, (0, 0, 255), -1) satırı çalıştığında, (500, 600) noktasına kırmızı bir çember çizilir.

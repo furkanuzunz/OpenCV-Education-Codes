@@ -1,0 +1,56 @@
+Örnek Bir Senaryo
+Diyelim ki elimizde şu şekilde küçük bir resim olsun (gri tonlamalı):
+
+[[255, 255,   0,   0],  # Beyaz, Beyaz, Siyah, Siyah
+ [255, 255,   0,   0],
+ [  0,   0, 255, 255],
+ [  0,   0, 255, 255]]
+
+ Ve kernel'imiz şu şekilde olsun:
+
+[[1, 1],
+ [1, 1]]
+
+ Adım 1: Kernel'i İlk Piksel Üzerine Yerleştir
+Kernel'i resmin sol üst köşesine yerleştirirsek:
+
+Kernel:
+[[1, 1],
+ [1, 1]]
+
+Resim Kısmı:
+[[255, 255],
+ [255, 255]]
+
+ Kernel'in kapladığı alandaki tüm pikseller beyaz (255). Bu nedenle, bu piksel beyaz kalır.
+
+Adım 2: Kernel'i Kaydır
+Kernel'i bir piksel sağa kaydırdığımızda:
+
+Kernel:
+[[1, 1],
+ [1, 1]]
+
+Resim Kısmı:
+[[255,   0],
+ [255,   0]]
+
+ Kernel'in kapladığı alanda bir siyah piksel (0) var. Bu nedenle, bu piksel siyah olur.
+
+Kernel'in tüm elemanları 1 olduğu için, kernel'in kapladığı alandaki tüm piksellerin kontrol edilmesini sağlar. Eğer kernel'de 0 değerleri olsaydı, bu değerlerin bulunduğu pikseller kontrol dışı kalırdı. 
+Ancak 1'lerden oluşan bir kernel, kapladığı tüm pikselleri dikkate alır.
+
+*****************************
+Kernel'in Kapladığı Alan ve Pikseller
+Kernel, resim üzerinde kaydırılırken belirli bir bölgeyi (piksel grubunu) kontrol eder. Ancak burada önemli olan nokta şu:
+
+Kernel'in kapladığı alanın merkez pikseli , işlem sonucunda etkilenecek olan pikseldir.
+Diğer pikseller (kernel'in kapladığı alandaki çevre pikseller), sadece kontrol amaçlı kullanılır.
+Yani, kernel'in tamamı bir bölgeyi kontrol eder, ancak sonuç olarak sadece merkez pikselin değeri değiştirilir .
+
+Neden Sadece Merkez Piksel Etkilenir?
+Bu, erozyon işleminin tanımından kaynaklanır:
+
+Erozyon, bir pikselin değerini, kernel'in kapladığı alandaki en küçük piksel değerine göre günceller.
+Eğer kernel'in kapladığı alanda en az bir siyah piksel (0) varsa, merkez piksel de siyah olur.
+Eğer kernel'in kapladığı alandaki tüm pikseller beyaz (255) ise, merkez piksel beyaz kalır.
