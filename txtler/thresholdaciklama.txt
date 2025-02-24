@@ -1,0 +1,247 @@
+**************
+1.yöntem
+
+3. Thresholding İşlemi
+1 ret, threshold1 = cv2.threshold(img, 127, 200, cv2.THRESH_BINARY)
+
+ret, threshold1 = cv2.threshold(img, 127, 200, cv2.THRESH_BINARY)
+cv2.threshold(): Bir resim üzerinde eşikleme (thresholding) işlemi yapar.
+Parametreler:
+img: Eşiklenecek giriş görüntüsü (gri tonlamalı).
+127: Eşik değeri. Piksel yoğunluğu bu değerden büyükse, piksel beyaza çevrilir; küçükse siyaha çevrilir.
+200: Maksimum değer. Eğer piksel yoğunluğu eşik değerinden büyükse, bu değere atanır.
+cv2.THRESH_BINARY: Kullanılacak eşikleme yöntemi. Bu yöntemde:
+Eğer piksel yoğunluğu eşik değerinden büyükse, maksimum değere (örneğin 200) atanır.
+Eğer küçükse, 0'a (siyah) atanır.
+Dönen Değerler:
+ret: Eşikleme işleminde kullanılan eşik değeri (127). Bu değer genellikle doğrudan kullanılmaz.
+threshold1: Eşiklenmiş (segmentlenmiş) çıktı görüntüsüdür. Bu görüntü artık siyah-beyazdır.
+
+
+
+Thresholding Yöntemleri Hakkında Ek Bilgi
+cv2.threshold() fonksiyonunda farklı eşikleme yöntemleri kullanılabilir. Örneğin:
+
+cv2.THRESH_BINARY :
+Eğer piksel değeri eşikten büyükse, maksimum değere atanır; aksi takdirde 0'a atanır.
+Formül:
+output(x,y)={ max_value,    if input(x,y)>threshold
+              0,                   otherwise
+              
+******Eğer smile.jpg resmi üzerinde bu kod çalıştırılırsa:
+
+Resim önce gri tonlamalı hale getirilir.
+Daha sonra, her pikselin yoğunluğu 127 ile karşılaştırılır.
+Eğer pikselin yoğunluğu 127'den büyükse, piksel 200 (beyaz) olur.
+Eğer pikselin yoğunluğu 127'den küçükse, piksel 0 (siyah) olur.
+Sonuç olarak, resim siyah-beyaz bir segmentasyon haline gelir.********
+ 
+cv2.THRESH_BINARY_INV :
+THRESH_BINARY'nin tersi. Eğer piksel değeri eşikten küçükse, maksimum değere atanır; aksi takdirde 0'a atanır.
+cv2.THRESH_TRUNC :
+Eğer piksel değeri eşikten büyükse, eşik değerine sabitlenir; aksi takdirde orijinal değer korunur.
+cv2.THRESH_TOZERO :
+Eğer piksel değeri eşikten küçükse, 0'a atanır; aksi takdirde orijinal değer korunur.
+cv2.THRESH_TOZERO_INV :
+Eğer piksel değeri eşikten büyükse, 0'a atanır; aksi takdirde orijinal değer korunur.
+Neden Thresholding Kullanılır?
+Segmentasyon : Görüntüyü ön plan ve arka plan olarak bölmek için kullanılır.
+Gürültü Azaltma : Gürültülü pikselleri temizlemek için kullanılır.
+Metin Tespiti : Metin tabanlı görüntü işleme projelerinde metinleri arka plandan ayırmak için kullanılır.
+Hareket Tespiti : Video işlemede hareket eden nesneleri tespit etmek için kullanılır.
+
+*******************************
+
+
+2.yöntem adaptive
+
+
+cv2.threshold ile cv2.adaptiveThreshold Arasındaki Farklar
+Eşik Değeri
+Sabit bir eşik değeri kullanılır.
+                                Dinamik (her piksel için ayrı hesaplanır).
+Aydınlatma Farklılıklar
+Aydınlatma farklılıklarına duyarlı değildir.
+                              Aydınlatma farklılıklarına karşı dayanıklıdır.
+Kullanım Alanları
+Basit segmentasyon görevleri.
+                            Metin çıkarma, nesne tespiti gibi karmaşık gör
+
+
+Resim önce gri tonlamalı hale getirilir.
+Daha sonra, her piksel için dinamik bir eşik değeri hesaplanır.
+Eğer pikselin yoğunluğu hesaplanan eşik değerinden büyükse, piksel 255 (beyaz) olur.
+Eğer küçükse, piksel 0 (siyah) olur.
+Sonuç olarak, resim siyah-beyaz bir segmentasyon haline gelir. Ancak, bu sefer aydınlatma 
+farklılıklarına göre daha hassas bir şekilde gruplandırılır.
+
+
+***önemki ve güzeş
+
+Uyarlanabilir Eşikleme Yöntemleri
+cv2.adaptiveThreshold() fonksiyonunda iki farklı yöntem kullanılabilir:
+
+cv2.ADAPTIVE_THRESH_MEAN_C :
+Her piksel için eşik değeri, bu pikselin etrafındaki bloktaki piksellerin ortalamasından çıkarılan bir sabit (C) ile hesaplanır.
+Formül:
+                  threshold(x,y)=mean(block)−C
+cv2.ADAPTIVE_THRESH_GAUSSIAN_C :
+Her piksel için eşik değeri, bu pikselin etrafındaki bloktaki piksellerin ağırlıklı toplamından (Gauss ağırlıkları kullanılarak) çıkarılan bir sabit (C) ile hesaplanır.
+Formül:
+                    threshold(x,y)=gaussian_weighted_sum(block)−C
+
+
+    Parametreler:
+img : Giriş görüntüsü (gri tonlamalı). Bu, cv2.imread(path, 0) ile okunan görüntüdür.
+255 : Maksimum değer. Eğer bir pikselin yoğunluğu hesaplanan eşik değerinden büyükse, bu değere atanır.
+cv2.ADAPTIVE_THRESH_MEAN_C : Uyarlanabilir eşikleme yöntemi.
+Bu yöntemde, her piksel için bir eşik değeri hesaplanır. Bu değer, pikselin etrafındaki bir bölge (blok) içindeki piksellerin ortalamasıdır.
+cv2.THRESH_BINARY : Eşikleme türü.
+Eğer pikselin yoğunluğu hesaplanan eşik değerinden büyükse, maksimum değere (örneğin 255) atanır.
+Eğer küçükse, 0'a atanır.
+11 : Blok boyutu (kernel boyutu).
+Her piksel için eşik değeri hesaplanırken, bu pikselin etrafındaki bloğun boyutudur. Örneğin, 11x11 bir blokta piksellerin ortalaması alınır.
+Bu değer tek sayı olmalıdır (örneğin 3, 5, 7, 9, 11, vb.).
+2 : C sabiti.
+Hesaplanan eşik değerinden çıkarılan bir sabittir. Bu, eşik değerini ince ayarlamak için kullanılır. Örneğin, C=2 ise, hesaplanan eşik değerinden 2 çıkarılır.
+
+
+peki her piksel için ortalama eşiik değeri nasıl hesaplanır.
+
+Her piksel için eşik değeri hesaplamak , uyarlanabilir eşikleme (adaptive thresholding) işleminin temelidir. Bu işlemi anlamak için önce sabit eşiklemenin ne olduğunu hatırlayalım, ardından uyarlanabilir eşiklemenin nasıl çalıştığını adım adım açıklayalım.
+profile
+Qwen2.5-Max
+10:11 pm
+Tabii, bu konuyu daha detaylı ve basit bir şekilde açıklayayım. Her piksel için eşik değeri hesaplamak , uyarlanabilir eşikleme (adaptive thresholding) işleminin temelidir. Bu işlemi anlamak için önce sabit eşiklemenin ne olduğunu hatırlayalım, ardından uyarlanabilir eşiklemenin nasıl çalıştığını adım adım açıklayalım.
+
+1. Sabit Eşikleme (Fixed Thresholding)
+Sabit eşiklemede:
+
+Tüm resim için tek bir eşik değeri kullanılır.
+Örneğin, 127 eşik değeri seçilirse:
+Eğer bir pikselin yoğunluğu 127'den büyükse, bu piksel beyaza (255) çevrilir.
+Eğer küçükse, siyaha (0) çevrilir.
+Bu yöntem, tüm resimde aynı aydınlatma koşulları olduğunda iyi sonuç verir. Ancak, resmin farklı bölgelerinde farklı aydınlatma koşulları varsa (örneğin, bir taraf daha karanlık, diğer taraf daha aydınlık), bu yöntem başarısız olabilir.
+
+2. Uyarlanabilir Eşikleme (Adaptive Thresholding)
+Uyarlanabilir eşiklemede ise:
+
+Her piksel için ayrı bir eşik değeri hesaplanır.
+Bu eşik değeri, o pikselin etrafındaki bir bölgeye (bloğa) göre belirlenir.
+Nasıl Çalışır?
+Blok Boyutu (Kernel Boyutu) :
+Her piksel için, etrafındaki bir bölge (blok) seçilir.
+Örneğin, 11x11 blok boyutu seçildiğinde, her pikselin etrafındaki 11x11 piksellik bir alan ele alınır.
+Eşik Değerini Hesaplama :
+Seçilen bloktaki piksellerin yoğunluk değerlerinin ortalaması veya ağırlıklı toplamı hesaplanır.
+Bu hesaplanan değer, o piksel için eşik değeri olarak kabul edilir.
+Ayrıca, bu eşik değerinden bir sabit (C) çıkarılır. Bu, ince ayar yapmak için kullanılır.
+Pikselin Durumunu Belirleme :
+Eğer pikselin yoğunluğu, hesaplanan eşik değerinden büyükse, bu piksel beyaza (255) çevrilir.
+Eğer küçükse, siyaha (0) çevrilir.
+
+
+
+Örnek ile Açıklama
+Diyelim ki elimizde aşağıdaki gri tonlamalı bir resim var:
+            
+[[50, 60, 70],
+     [80, 90, 100],
+        [110, 120, 130]]
+
+Bu resimdeki her pikselin yoğunluğu gösterilmiştir. Şimdi, bu resim üzerinde uyarlanabilir eşikleme yapalım.
+
+Adım 1: Blok Boyutu Seçimi
+Blok boyutu 3x3 olsun. Yani her piksel için, etrafındaki 3x3 piksellik bir bölge ele alınacak.
+Adım 2: Eşik Değerini Hesaplama
+Örneğin, merkezdeki pikselin (90) eşik değerini hesaplayalım:
+Merkez pikselin etrafındaki 3x3 blok şu şekilde:
+[[50, 60, 70],
+ [80, 90, 100],
+ [110, 120, 130]]
+ Bu bloktaki piksellerin ortalamasi 
+                                    ORTALAMA = (50 + 60 + 70 + 80 + 90 + 100 + 110 + 120 + 130) / 9 = 90 dır.
+
+                            Sabit C değeri 2 olsun. Eşik değeri = Ortalama -C = 90 - 2 = 88 dir
+
+                            Adım 3: Pikselin Durumunu Belirleme
+Merkez pikselin yoğunluğu (90) eşik değerinden (88) büyük olduğu için, bu piksel beyaza (255) çevrilir.
+
+Niye Dinamik Eşik Değeri Kullanılıyor?
+Resmin farklı bölgelerinde farklı aydınlatma koşulları olabilir. Örneğin:
+Bir taraf karanlık, diğer taraf aydınlık.
+Sabit bir eşik değeri, tüm resim için uygun olmayabilir.
+Uyarlanabilir eşikleme, her bölge için ayrı bir eşik değeri hesaplayarak bu sorunu çözer.
+
+
+Parametrelerin Etkisi
+Blok Boyutu (blockSize) :
+Ne kadar büyük bir blok seçilirse, o kadar geniş bir alanda ortalama hesaplanır.
+Küçük blok boyutları, daha hassas sonuçlar verir, ancak gürültüye daha duyarlıdır.
+Büyük blok boyutları, daha genel sonuçlar verir, ancak detayları kaybedebilir.
+Sabit (C) :
+Hesaplanan eşik değerinden çıkarılan bir sabittir.
+Eğer C değeri artırılırsa, eşik değeri düşer ve daha fazla piksel beyaza çevrilir.
+Eğer C değeri azaltılırsa, eşik değeri yükselir ve daha az piksel beyaza çevrilir.
+
+
+
+********************
+3.yöntem aslında gaussian mevzulu
+ağırlıklı toplam var orda
+
+1. Ağırlıklı Toplam Nedir?
+Ağırlıklı toplam, bir grup sayıyı (örneğin piksellerin yoğunluk değerlerini) toplarken her bir sayıyı belirli bir "ağırlık" ile çarparak hesaplanan bir toplamdır. Ağırlık, her sayının ne kadar önemli olduğunu veya etkisinin ne kadar büyük olduğunu gösterir.
+
+Örneğin:
+
+Bir pikselin etrafındaki bloktaki piksellerin yoğunluk değerleri şu şekilde olsun: [50, 60, 70].
+Eğer bu piksellerin basit ortalamasını alırsak:
+Ortalama = 50 + 60 + 70 / 3  = 60dır
+Ancak, eğer her piksele farklı ağırlıklar verirsek (örneğin [0.2, 0.3, 0.5]), ağırlıklı toplam şöyle hesaplanır:
+
+Ağırlıklı Toplam = (50×0.2) + (60×0.3) + (70×0.5) = 10+18+35 = 63
+Burada, her pikselin değeri kendi ağırlığıyla çarpılır ve sonuçlar toplanır. Bu, bazı piksellerin diğerlerinden daha fazla etkili olduğu anlamına gelir.
+
+
+
+
+2. Gauss Ağırlıkları Nedir?
+Gauss ağırlıkları, bir pikselin etrafındaki piksellerin önemini belirlemek için kullanılan özel bir ağırlıklandırma yöntemidir. Bu yöntemde:
+
+Merkeze yakın olan pikseller daha yüksek ağırlığa sahiptir.
+Kenarlara doğru gidildikçe ağırlıklar azalır.
+Bu ağırlıklar, Gauss fonksiyonu adı verilen bir matematiksel formülle hesaplanır. Gauss fonksiyonu, bir çan eğrisi şeklinde bir dağılım oluşturur. 
+İşte bu nedenle, merkezdeki pikseller daha fazla etkilidir.
+
+
+3. Gauss Ağırlıklı Toplam Nasıl Hesaplanır?
+Gauss ağırlıklı toplam, bir pikselin etrafındaki bloktaki piksellerin yoğunluk değerlerini Gauss ağırlıklarıyla çarparak ve sonuçları toplayarak hesaplanır.
+
+Örnek:
+Diyelim ki bir pikselin etrafındaki 3x3 bloktaki piksellerin yoğunluk değerleri şu şekilde:
+
+[[50, 60, 70],
+ [80, 90, 100],
+ [110, 120, 130]]
+
+ Bu bloktaki piksellerin Gauss ağırlıkları şu şekilde olsun:
+
+[[0.05, 0.1, 0.05],
+ [0.1,  0.4, 0.1],
+ [0.05, 0.1, 0.05]]
+
+ Bu durumda, Gauss ağırlıklı toplam şu şekilde hesaplanır:
+
+                        Ağırlıklı Toplam=(50×0.05)+(60×0.1)+(70×0.05)+(80×0.1)+(90×0.4)+(100×0.1)+(110×0.05)+(120×0.1)+(130×0.05)
+
+Bu işlem sonucunda, merkeze yakın olan piksellerin (örneğin 90 yani 1,1 konumunda ya ondna merkez dedik aldanma) daha fazla etkisi olacaktır, çünkü onların ağırlıkları daha yüksektir.
+
+4. Gauss Ağırlıklı Eşik Değerini Hesaplama
+Uyarlanabilir eşiklemede (cv2.ADAPTIVE_THRESH_GAUSSIAN_C), her piksel için eşik değeri şu şekilde hesaplanır:
+
+Eşik Degeri=Gauss Agırlıklı Toplam−C
+Burada, C bir sabittir ve eşik değerini ince ayarlamak için kullanılır.
+
+O 0.05 gibi yogunlukları Bu ağırlıklar, Gauss fonksiyonu tarafından otomatik olarak hesaplanır ve OpenCV'nin cv2.ADAPTIVE_THRESH_GAUSSIAN_C yöntemi tarafından kullanılır. Yani, bu ağırlıkları siz belirlemezsiniz; OpenCV kütüphanesi, 
+Gauss dağılımını temel alarak bu değerleri otomatik olarak oluşturur.

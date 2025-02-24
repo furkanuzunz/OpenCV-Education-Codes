@@ -1,0 +1,110 @@
+1. cv2.inRange() Ne Yapar?
+cv2.inRange() fonksiyonu, bir görüntünün her pikselini kontrol eder ve belirli bir renk aralığına uyan pikselleri işaretler. Bu işlem sonucunda, bir binary mask (siyah-beyaz görüntü) elde edilir. Şimdi bunu adım adım açıklayalım:
+
+2. Adım Adım Çalışma Şekli
+a. Giriş Görüntüsü (frame_hsv)
+Web kamerasından alınan görüntüyü önce HSV formatına dönüştürdük:
+python
+Copy
+1
+frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+HSV formatında, her pikselin değeri şu şekilde temsil edilir:
+H (Hue) : Renk tonu (0-179 arasında değer alır).
+S (Saturation) : Doygunluk (0-255 arasında değer alır).
+V (Value) : Parlaklık (0-255 arasında değer alır).
+Örneğin, bir pikselin değeri [120, 200, 150] olabilir. Bu, maviye yakın bir renk olduğunu gösterir.
+
+b. Renk Aralığı (lower_color ve upper_color)
+Trackbarlarla belirlenen alt (lower_color) ve üst (upper_color) sınırlar, hangi renklerin seçileceğini belirler.
+Örneğin:
+python
+Copy
+1
+2
+lower_color = np.array([100, 150, 0])  # Alt sınır
+upper_color = np.array([140, 255, 255])  # Üst sınır
+Bu aralık, mavi renge yakın olan pikselleri kapsar.
+c. Her Pikseli Kontrol Etme
+cv2.inRange() fonksiyonu, giriş görüntüsündeki her pikseli tek tek kontrol eder ve şu soruyu sorar:
+
+Bu pikselin değeri, lower_color ile upper_color arasında mı?
+Eğer cevap evet ise:
+
+Maske görüntüsünde o piksel beyaz (255) olarak işaretlenir.
+Eğer cevap hayır ise:
+
+Maske görüntüsünde o piksel siyah (0) olarak işaretlenir.
+3. Görsel Bir Örnek
+Diyelim ki elimizde şu HSV değerlerine sahip bir görüntü var:
+
+A 110 200 150
+B 50 100 200
+C 130 220 180
+
+Ve biz şu renk aralığını tanımladık:
+
+lower_color = [100, 150, 0]
+upper_color = [140, 255, 255]
+Bu durumda: -- 100 ile 140 arasındami misal bak .
+
+Piksel A : [110, 200, 150] → Aralığın içinde → Beyaz (255)
+yani aslinda 
+Piksel B : [50, 100, 200] → Aralığın dışında → Siyah (0)
+Piksel C : [130, 220, 180] → Aralığın içinde → Beyaz (255)
+Sonuç olarak, maske görüntüsü şu şekilde olacaktır:
+
+A
+Beyaz
+B
+Siyah
+C
+Beyaz
+
+4. Binary Mask Nedir?
+Binary mask, siyah-beyaz bir görüntüdür:
+
+Beyaz pikseller (255) : Belirtilen renk aralığına uyan pikseller.
+Siyah pikseller (0) : Belirtilen renk aralığına uymayan pikseller.
+Bu mask, orijinal görüntüdeki belirli renge sahip bölgeleri vurgulamak için kullanılır.
+
+5. Neden HSV Kullanıyoruz?
+RGB/BGR formatında renk filtreleme yapmak zordur çünkü:
+
+Renk bilgisi üç kanal arasında dağılmıştır.
+Işık değişiklikleri, renk algısını etkiler.
+HSV formatı ise:
+
+Renk bilgisini tek bir kanalda (H ) toplar.
+Işık değişikliklerinden daha az etkilenir.
+Bu nedenle, renk tabanlı filtreleme işlemleri için HSV tercih edilir.
+
+6. Kodun Tamamını Tekrar Gözden Geçirelim
+python
+Copy
+1
+mask = cv2.inRange(frame_hsv, lower_color, upper_color)
+Bu satır şu adımları gerçekleştirir:
+
+frame_hsv görüntüsündeki her pikselin HSV değerini kontrol eder.
+Her pikselin değeri, lower_color ve upper_color arasında mı diye bakar.
+Eğer pikselin değeri bu aralıkta ise:
+Maske görüntüsünde o piksel beyaz (255) olarak işaretlenir.
+Eğer pikselin değeri bu aralıkta değilse:
+Maske görüntüsünde o piksel siyah (0) olarak işaretlenir.
+Sonuç olarak, bir binary mask (siyah-beyaz görüntü) elde edilir.
+7. Ekran Çıktısı
+"Original" Penceresi : Web kamerasından alınan orijinal görüntüyü gösterir.
+"Mask" Penceresi : Belirli bir renk aralığına uyan pikselleri beyaz, diğerlerini siyah gösteren binary mask görüntüsünü gösterir.
+8. Pratikte Nasıl Çalışır?
+Örneğin:
+
+Eğer trackbarları ayarlayarak mavi rengi seçerseniz, mask penceresinde sadece mavi nesneler beyaz olarak görünür.
+Diğer tüm renkler siyah olarak görünür.
+Bu sayede, belirli bir rengi tespit edebilir veya o rengi izleyebilirsiniz.
+
+9. Özet
+cv2.inRange() fonksiyonu, bir görüntünün her pikselini kontrol eder ve belirli bir renk aralığına uyan pikselleri beyaz, diğerlerini siyah olarak işaretler.
+Bu işlem sonucunda, bir binary mask (siyah-beyaz görüntü) elde edilir.
+Bu maske, orijinal görüntüdeki belirli renge sahip bölgeleri vurgulamak için kullanılır.
+
+alistirmaRenklerinHVS kodunu buuma py dosyasinda alta bak.
