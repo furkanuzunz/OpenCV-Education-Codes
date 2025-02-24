@@ -1,0 +1,24 @@
+HSV (Hue, Saturation, Value) renk uzayı, renkleri üç bileşene ayırır: Hue (Ton), Saturation (Doğruluk) ve Value (Değer). Bu bileşenlerin her biri farklı bir aralıkta değer alabilir. İşte bu aralıkların neden farklı olduğu açıklanıyor:
+
+1. Hue (Ton):
+Aralık: 0 - 180
+Anlamı: Renk tonu belirler. Örneğin, kırmızı, yeşil, mavi gibi.
+Neden 180?
+OpenCV'de Hue değeri 0 ile 179 arasında değişir. Bu, tam olarak 360 dereceyi temsil etmek için 2 katı alınmıştır. Yani, 0 ile 179 arasındaki değerler, 0 ile 359 dereceyi temsil eder.
+Bu nedenle, cv2.createTrackbar("Lower - H", "Trackbar", 0, 180, nothing) ve cv2.createTrackbar("Upper - H", "Trackbar", 180, 180, nothing) kullanılır.
+2. Saturation (Doğruluk):
+Aralık: 0 - 255
+Anlamı: Renk yoğunluğu belirler. Daha yüksek değerler, daha yoğun renkleri temsil eder.
+Neden 255?
+Saturation değeri, 0 ile 255 arasında değişir. Bu, 8-bitlik bir sayısal değerdir.
+Bu nedenle, cv2.createTrackbar("Lower - S", "Trackbar", 0, 255, nothing) ve cv2.createTrackbar("Upper - S", "Trackbar", 255, 255, nothing) kullanılır.
+3. Value (Değer):
+Aralık: 0 - 255
+Anlamı: Parlaklık belirler. Daha yüksek değerler, daha parlak renkleri temsil eder.
+Neden 255?
+Value değeri, 0 ile 255 arasında değişir. Bu, 8-bitlik bir sayısal değerdir.
+Bu nedenle, cv2.createTrackbar("Lower - V", "Trackbar", 0, 255, nothing) ve cv2.createTrackbar("Upper - V", "Trackbar", 255, 255, nothing) kullanılır.
+4. Özet:
+Hue: 0 ile 180 arasında değişir çünkü OpenCV'de Hue değeri 0 ile 179 arasında olur.
+Saturation ve Value: 0 ile 255 arasında değişir çünkü bu değerler 8-bitlik sayısal değerlerdir.
+Bu aralıklar, HSV renk uzayının özelliklerini yansıtır ve renk tespiti işlemlerinde doğru sonuçlar elde etmenizi sağlar

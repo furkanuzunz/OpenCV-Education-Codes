@@ -1,0 +1,128 @@
+benim anlamadigim [255,0,0] hani reddi ? şimdi ise [:,:,0] diyoruz ki red ?
+Evet, bu konu başta kafa karıştırıcı gelebilir, ancak aslında oldukça basit. İki durum birbiriyle ilişkili, ancak farklı şeyleri ifade ediyor. İşte detaylı açıklama:
+
+1. [255, 0, 0] Ne Anlama Gelir?
+Bu, bir pikselin RGB (Red, Green, Blue) değerlerini temsil eder:
+
+Red (Kırmızı): 255 (maksimum yoğunluk)
+
+Green (Yeşil): 0 (yoğunluk yok)
+
+Blue (Mavi): 0 (yoğunluk yok)
+
+Bu değer, tamamen kırmızı bir renk oluşturur. Yani bu piksel, saf kırmızıdır.
+
+2. [:, :, 0] Ne Anlama Gelir?
+Bu, bir görüntü dizisindeki Red (Kırmızı) kanalını seçmek için kullanılır. Görüntü, bir NumPy dizisi olarak temsil edilir ve şekli (yükseklik, genişlik, kanal) şeklindedir. Örneğin:
+
+img[:, :, 0]: Tüm piksellerin Red (Kırmızı) kanalını seçer.
+
+img[:, :, 1]: Tüm piksellerin Green (Yeşil) kanalını seçer.
+
+img[:, :, 2]: Tüm piksellerin Blue (Mavi) kanalını seçer.
+
+İlişki Nedir?
+[255, 0, 0], tek bir pikselin RGB değerlerini temsil eder.
+
+[:, :, 0], tüm piksellerin Red (Kırmızı) kanalını seçer.
+
+Örneğin:
+
+Eğer bir pikselin değeri [255, 0, 0] ise, bu pikselin Red (Kırmızı) kanalı 255'tir.
+
+img[:, :, 0] ile bu pikselin Red kanalına erişirseniz, 255 değerini alırsınız.
+
+Örnek Üzerinden Açıklama
+1. Tek Bir Pikselin RGB Değerleri
+python
+Copy
+pixel = [255, 0, 0]  # RGB değerleri
+print("Red:", pixel[0])  # Çıktı: 255
+print("Green:", pixel[1])  # Çıktı: 0
+print("Blue:", pixel[2])  # Çıktı: 0
+Burada:
+
+pixel[0], Red (Kırmızı) kanalını verir.
+
+pixel[1], Green (Yeşil) kanalını verir.
+
+pixel[2], Blue (Mavi) kanalını verir.
+
+2. Görüntüdeki Tüm Piksellerin Red Kanalı
+python
+Copy
+import numpy as np
+
+# Örnek bir RGB görüntü oluştur (2x2 boyutunda)
+img = np.array([[[255, 0, 0], [0, 255, 0]],
+                [[0, 0, 255], [128, 128, 128]]])
+
+# Red (Kırmızı) kanalını seç
+red_channel = img[:, :, 0]
+print("Red Channel:")
+print(red_channel)
+Çıktı:
+
+Copy
+Red Channel:
+[[255   0]
+ [  0 128]]
+Burada:
+
+img[:, :, 0], tüm piksellerin Red (Kırmızı) kanalını seçer.
+
+Örneğin, (0, 0) koordinatındaki pikselin Red değeri 255'tir.
+
+Neden [:, :, 0] Red Kanalını Verir?
+Görüntü, bir NumPy dizisi olarak temsil edilir ve şekli (yükseklik, genişlik, kanal) şeklindedir. Kanal indeksleri şu şekildedir:
+
+0: Red (Kırmızı)
+
+1: Green (Yeşil)
+
+2: Blue (Mavi)
+
+Bu nedenle:
+
+img[:, :, 0]: Red (Kırmızı) kanalını seçer.
+
+img[:, :, 1]: Green (Yeşil) kanalını seçer.
+
+img[:, :, 2]: Blue (Mavi) kanalını seçer.
+
+Özet
+[255, 0, 0], tek bir pikselin RGB değerlerini temsil eder. Bu durumda, Red (Kırmızı) kanalı 255'tir.
+
+[:, :, 0], tüm piksellerin Red (Kırmızı) kanalını seçer.
+
+İkisi birbiriyle ilişkilidir: [255, 0, 0] gibi bir pikselin Red değerine pixel[0] veya img[x, y, 0] ile erişebilirsiniz.
+
+Yani, [255, 0, 0] saf kırmızı bir pikseli temsil ederken, [:, :, 0] tüm piksellerin Red (Kırmızı) kanalını seçer. 😊
+
+
+
+----------------------------------------------
+img = np.zeros((10,10,3),np.uint8)
+#bilgisayarlarin bir pikseli gorunutye nasi isledigini anlamak icin  biz de tek tek pikselleri boayaylım
+img[0,0] = (255,255,255) # sifira sifir koordinatidaki PİKSELE eristik resmin.
+#her piksel uc kanala sahiptir.[R, G, B]. Bu nedenle, img[0, 0] aslında (0, 0) koordinatındaki pikselin [R, G, B] değerlerini temsil eder.
+
+
+# img[0, 0] ile [:, :, 0] Arasındaki Fark
+# img[0, 0]: Tek bir pikselin RGB değerlerine erişir veya değiştirir.
+# Örneğin: img[0, 0] = (255, 255, 255) → (0, 0) pikselini beyaz yapar.
+# img[:, :, 0]: Tüm piksellerin Red (Kırmızı) kanalına erişir veya değiştirir.
+# Örneğin: img[:, :, 0] = 255 → Tüm piksellerin Kırmızı kanalını maksimum (255) yapar.
+blue = img[420,500,0]
+
+Eğer bir görüntü siyah-beyaz ise, bu görüntüyü temsil eden NumPy dizisinin boyutu tek kanallı olmalıdır:
+Örneğin: (yükseklik, genişlik)
+Her piksel için sadece bir değer bulunur.
+img[0, 0] = 255  # Beyaz
+img[0, 1] = 200  # Açık gri
+img[0, 2] = 150  # Orta gri
+img[0, 3] = 15   # Koyu gri
+
+#herhangi bir koordinattaki mesela sadece mavi renk degerine nasıl erişirim.
+blue = img[420,500,0]#420 ye 500 pikselindeki mavi deger(sıfırncı indeksi)
+#biz mesela yukarda bgr degerleri icin ciktimiz [150,154,145] cikti.sifirnci indeks bize mavi degerini verir.
