@@ -1,0 +1,101 @@
+etectMultiScale fonksiyonu, tespit ettiği yüzleri bir liste (veya NumPy dizisi) olarak döndürür. Her yüz için (x, y, w, h) şeklinde bir dörtlü tuple verir.
+
+Şimdi, for döngüsünün nasıl çalıştığını adım adım inceleyelim:
+
+1. detectMultiScale Çıktısı
+Diyelim ki aşağıdaki gibi iki yüz bulduk:
+
+python
+Kopyala
+Düzenle
+faces = np.array([[34, 65, 100, 100], [200, 150, 90, 90]])
+Bu aslında bir liste gibi düşünülmeli:
+
+python
+Kopyala
+Düzenle
+faces = [
+    (34, 65, 100, 100),   # İlk yüzün koordinatları
+    (200, 150, 90, 90)    # İkinci yüzün koordinatları
+]
+2. for Döngüsü ile Değerleri Nasıl Alıyoruz?
+Kodda şu satır vardı:
+
+python
+Kopyala
+Düzenle
+for (x, y, w, h) in faces:
+Burada faces bir liste gibi davrandığı için, her iterasyonda bir tuple alıyoruz.
+
+Adım adım bakarsak:
+
+1. döngü → (x, y, w, h) = (34, 65, 100, 100)
+2. döngü → (x, y, w, h) = (200, 150, 90, 90)
+Bunları değişkenlere atıyoruz ve cv2.rectangle() fonksiyonuyla dikdörtgen çiziyoruz:
+
+python
+Kopyala
+Düzenle
+cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+Burada:
+
+(x, y): Dikdörtgenin sol üst köşesi.
+(x + w, y + h): Sağ alt köşe.
+(0, 0, 255): Kırmızı renk (BGR formatında).
+2: Çizgi kalınlığı.
+3. Özetle
+detectMultiScale() bize birden fazla (x, y, w, h) tuple'ı içeren bir liste döndürür.
+for (x, y, w, h) in faces: diyerek her yüzün koordinatlarını tek tek alırız.
+cv2.rectangle() ile dikdörtgen çizeriz.
+
+-----------------------------------------------
+
+tuple (demet) ve liste (list) veri yapılarıdır, ancak aralarında bazı önemli farklar vardır.
+
+📌 Tuple (Demet) Nedir?
+Parantez () içinde tanımlanır.
+Değiştirilemez (immutable), yani oluşturduktan sonra elemanlarını değiştiremeyiz.
+Daha hızlı çalışır ve bellekte daha az yer kaplar.
+Genellikle sabit verileri saklamak için kullanılır.
+Tuple Örneği
+python
+Kopyala
+Düzenle
+t = (10, 20, 30)
+print(t[0])  # Çıktı: 10
+
+t[0] = 100  # HATA! Tuple değiştirilemez.
+📌 Liste (List) Nedir?
+Köşeli parantez [] içinde tanımlanır.
+Değiştirilebilir (mutable), yani elemanlarını ekleyebilir, değiştirebilir veya silebiliriz.
+Daha esnektir, farklı veri türlerini içerebilir.
+Liste Örneği
+python
+Kopyala
+Düzenle
+lst = [10, 20, 30]
+print(lst[0])  # Çıktı: 10
+
+lst[0] = 100  # Değiştirilebilir!
+print(lst)  # Çıktı: [100, 20, 30]
+⚡ Tuple ve Liste Arasındaki Farklar
+Özellik	Tuple ( )	Liste [ ]
+Değiştirilebilir mi?	❌ Hayır	✅ Evet
+Hızlı mı?	✅ Daha hızlı	❌ Daha yavaş
+Bellek kullanımı	✅ Daha az	❌ Daha fazla
+Eleman eklenebilir mi?	❌ Hayır	✅ Evet (append())
+Ne zaman kullanılır?	Sabit veriler için	Değişebilir veriler için
+Peki detectMultiScale() bize neden tuple listesi döndürüyor?
+Çünkü detectMultiScale() yüzlerin konumunu değişmez olarak döndürür:
+
+python
+Kopyala
+Düzenle
+faces = [(34, 65, 100, 100), (200, 150, 90, 90)]
+Burada her bir yüz bir tuple (x, y, w, h) şeklindedir.
+Ama faces değişkeni bir liste olduğu için, for döngüsünde bunları tek tek alıp işleyebiliyoruz.
+
+Özet
+✔ Tuple (( )) değiştirilemez ve hızlıdır.
+✔ Liste ([ ]) değiştirilebilir ve esnektir.
+✔ detectMultiScale(), yüzleri bir tuple listesi olarak döndürür ve for döngüsüyle bunları tek tek işleriz.

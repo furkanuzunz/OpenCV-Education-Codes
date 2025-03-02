@@ -1,0 +1,9 @@
+yapıcagımız calısmlarda gözlerin hep yuz içerisinde olacagını varsayıcaz.
+
+dolayısıyla öncelikle resim veya video üzerinde yüzü algılıcaz.sonra bu bögleyi bir degisken icerisine atayacagız.
+
+yani dikdörtgen içine aldıgımız bölgeyi atayacagız
+
+ve benzer adımları o bölge için yapıcaz.
+
+bu şekilde o bölgedeki gözleri detect edicez

@@ -1,0 +1,21 @@
+İlgili kütüphaneyi,görüntüyyü,haar cascade ddosyasını dahil et.
+import cv2
+
+img = cv2.imread
+body_cascade = cv2.CascadeClassifier("....) gibi
+
+2.olarak
+Görüntüyü gri tonlara çevirerek üzerindeki ilgili nesneyi aricaz.
+
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+resim üzerinde haar light özellikleri ararken gri tonlara cevirmemz gerekiyor.
+bu sekilde aydınlıkları ve karanlıkları daha rahat algılıyo ve ilgili nesneyi daha rahat tanıyabiliyoruz.
+
+bodies = body_cascade.detectMultiScale(gray,1,1,5)
+nesnenin koordinatlarını bulduk
+
+
+3.olarak
+bulunan nesneleri işaretlicez.
+for (x,y,w,h) in bodies:
+cv2.rectangle(img,(x,y),(x + w,y + h),(0,255,0),2)
