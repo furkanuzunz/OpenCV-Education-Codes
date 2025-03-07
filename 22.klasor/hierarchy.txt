@@ -1,0 +1,192 @@
+cv2.findContours() Fonksiyonundaki hierarchy Nedir?
+cv2.findContours() fonksiyonu, bir görüntüdeki konturları bulur ve iki şey döndürür:
+
+contours → Bulunan konturların listesi
+hierarchy → Konturlar arasındaki ebeveyn-çocuk (hiyerarşik) ilişkileri
+Öncelikle, Kontur (Contour) Nedir?
+Bir görüntüde aynı renkteki veya yoğunluktaki bölgelerin sınırlarını temsil eden kapalı eğrilerdir.
+
+Örnek:
+Bir dairenin kenarlarını bir kontur olarak düşünebilirsin. Eğer bir küçük daire, büyük bir dairenin içinde yer alıyorsa, bunlar ebeveyn-çocuk ilişkisine sahiptir.
+
+hierarchy Ne İçerir?
+hierarchy dizisi, her kontur için 4 değerden oluşan bir dizi (NumPy array) döndürür:
+
+python
+Kopyala
+Düzenle
+[Next, Previous, First_Child, Parent]
+Bunlar şu anlama gelir:
+
+Next → Aynı seviyedeki bir sonraki konturun index’i
+Previous → Aynı seviyedeki bir önceki konturun index’i
+First_Child → Konturun ilk iç konturunun (çocuğunun) index’i
+Parent → Konturun içinde bulunduğu konturun (ebeveyninin) index’i
+Eğer herhangi bir alan yoksa, o değerin yerine -1 gelir.
+
+Örnek Kullanım
+Bir görüntüde konturların nasıl bulunduğunu ve hierarchy’nin nasıl çalıştığını görelim:
+
+python
+Kopyala
+Düzenle
+import cv2
+import numpy as np
+
+# Siyah bir görüntü oluştur
+image = np.zeros((400, 400), dtype=np.uint8)
+
+# Beyaz dikdörtgenler çiz (farklı iç içe geçmiş şekiller oluşturacağız)
+cv2.rectangle(image, (50, 50), (350, 350), 255, -1)  # Büyük dikdörtgen
+cv2.rectangle(image, (100, 100), (300, 300), 0, -1)  # İçerideki küçük siyah dikdörtgen
+
+# Konturları bul
+contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+# Hierarchy’yi yazdır
+print("Hierarchy:\n", hierarchy)
+
+# Konturları çiz ve göster
+image_bgr = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+cv2.drawContours(image_bgr, contours, -1, (0, 255, 0), 2)
+
+cv2.imshow("Konturlar", image_bgr)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+Çıktıdaki hierarchy Açıklaması
+Eğer cv2.RETR_TREE kullanılırsa, çıktı şuna benzer olabilir:
+
+lua
+Kopyala
+Düzenle
+Hierarchy:
+ [[[ 1 -1 -1 -1]
+   [-1  0 -1 -1]]]
+Bu çıktıda:
+
+İlk kontur (dıştaki dikdörtgen) → Bir sonraki kontur var (Next = 1), ama önceki yok (Previous = -1), çocuk yok (First_Child = -1), ebeveyni yok (Parent = -1).
+İkinci kontur (içteki dikdörtgen) → Öncesinde bir kontur var (Previous = 0), çocuk yok (First_Child = -1), ebeveyni var (Parent = 0).
+Farklı cv2.RETR_ Modları ve hierarchy
+Hiyerarşi bilgisinin nasıl döneceği, kullanılan mode parametresine bağlıdır.
+
+cv2.RETR_ Modu	Açıklama
+cv2.RETR_EXTERNAL	Sadece en dıştaki konturları alır, iç konturları dikkate almaz. hierarchy döndürülmez.
+cv2.RETR_LIST	Tüm konturları alır, ancak hiçbir hiyerarşik ilişkiyi kaydetmez (her kontur bağımsızdır).
+cv2.RETR_CCOMP	Konturları 2 seviyeli bir hiyerarşi ile döndürür: dış konturlar (0. seviye) ve iç delikler (1. seviye).
+cv2.RETR_TREE	Tüm iç içe geçmiş ilişkileriyle birlikte konturları döndürür.
+Eğer sadece en dıştaki nesneleri istiyorsan:
+
+python
+Kopyala
+Düzenle
+contours, hierarchy = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+Bu durumda hierarchy, önemli olmaz, çünkü iç konturlar hiç bulunmaz.
+
+Özet
+✅ hierarchy, konturların ebeveyn-çocuk ilişkisini tutar.
+✅ Dört eleman içerir: Next, Previous, First_Child, Parent.
+✅ İç içe geçmiş nesneleri analiz etmek için önemlidir (Örneğin, bir dairenin içindeki başka bir daire gibi).
+✅ Farklı cv2.RETR_ modlarına bağlı olarak değişir.
+
+*-------------------------------------------------**---------
+
+
+Güzel bir soru! hierarchy[0], cv2.findContours() fonksiyonunun döndürdüğü çok boyutlu NumPy dizisinin ilk boyutuna erişmeyi sağlar. Bunu adım adım açıklayalım.
+
+Önce cv2.findContours() Çıktısını Hatırlayalım
+Bu fonksiyon şu iki değeri döndürür:
+
+python
+Kopyala
+Düzenle
+contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+contours → Tespit edilen konturların listesi.
+hierarchy → Konturların ebeveyn-çocuk ilişkilerini içeren çok boyutlu bir NumPy dizisi.
+Örnek Çıktı: hierarchy
+Diyelim ki görüntümüzde 2 kontur var ve cv2.RETR_TREE kullandık.
+Bu durumda, hierarchy şu şekilde bir çıktı verebilir:
+
+python
+Kopyala
+Düzenle
+hierarchy = array([[[ 1, -1, -1, -1],  
+                    [-1,  0, -1, -1]]], dtype=int32)
+Bunu parçalayalım:
+
+hierarchy.shape → (1, 2, 4)
+Bu 3 boyutlu bir dizidir, ama ilk boyut her zaman 1 olur.
+Bu yapı şu anlama gelir:
+
+hierarchy[0] → İlk (ve genellikle tek) boyuta erişir.
+hierarchy[0] şu listeyi döndürür:
+python
+Kopyala
+Düzenle
+[[ 1, -1, -1, -1],
+ [-1,  0, -1, -1]]
+Bu, konturların 2D bir liste olarak temsil edildiği düzleştirilmiş bir versiyondur.
+Özetle hierarchy[0] Nedir?
+📌 hierarchy, (1, N, 4) şeklinde bir NumPy dizisidir.
+📌 hierarchy[0] → İlk boyutu kaldırarak (N, 4) boyutlu bir diziye çevirir.
+📌 hierarchy[0] artık konturların listesidir ve her konturun [Next, Previous, First_Child, Parent] değerlerini içerir.
+
+Kod Örneği
+Eğer hierarchy[0] kullanmazsak:
+
+python
+Kopyala
+Düzenle
+print(hierarchy.shape)  # (1, N, 4)
+Eğer hierarchy[0] kullanırsak:
+
+python
+Kopyala
+Düzenle
+print(hierarchy[0].shape)  # (N, 4)
+Bu yüzden, kodu daha basitleştirmek için ilk boyutu kaldırıyoruz.
+
+Eğer try-except kullanmazsak ve hierarchy None gelirse, hierarchy[0] çağrıldığında TypeError oluşur.
+Bu yüzden try-except ile güvenli hale getiriyoruz. 🚀
+
+Sonuç
+✅ hierarchy → (1, N, 4) boyutunda bir NumPy dizisidir.
+✅ hierarchy[0] → (N, 4) boyutuna indirerek daha kolay erişim sağlar.
+✅ cv2.findContours() her zaman ilk boyutu 1 olan bir dizi döndürdüğü için, bu ilk boyutu atıyoruz.
+
+**devamı**
+o 1 aslinda en dıştaki 3 tane [ var onu kaldırıyoruz demi
+ChatGPT:
+Evet, tam olarak doğru anladın! 😄
+
+hierarchy döndüğünde, aslında üçüncü bir boyut daha eklenmiş olur ve hierarchy[0] dediğimizde bu ekstra boyutu kaldırmış oluruz.
+
+Bunu daha iyi anlaman için şöyle açıklayayım:
+
+hierarchy Dönüşü:
+python
+Kopyala
+Düzenle
+hierarchy = array([[[ 1, -1, -1, -1],  
+                    [-1,  0, -1, -1]]], dtype=int32)
+Yukarıdaki örnekte:
+
+İlk boyut (1) → [[...]] → Bir dış liste.
+İkinci boyut (2) → İki kontur var.
+Üçüncü boyut (4) → Her kontur için [Next, Previous, First_Child, Parent] bilgisi var.
+Yani üçlü bir liste yapısı elde ediyorsun.
+
+hierarchy[0] ile Kaldırmak:
+Bu yapının biraz kafa karıştırıcı olmasının sebebi, ilk boyutun gereksiz bir şekilde 1 olması.
+
+hierarchy[0] ile ilk boyutun (dıştaki [ ) kaldırılmış oluyor.
+Yani, hierarchy[0] şu hale gelir:
+python
+Kopyala
+Düzenle
+[[ 1, -1, -1, -1],
+ [-1,  0, -1, -1]]
+Bu artık 2 boyutlu bir liste olup, konturların hiyerarşisini temsil eder.
+
+Sonuç:
+🔹 hierarchy[0], aslında ilk dıştaki gereksiz köşeli parantezleri kaldırarak, sadece konturların ilişkilerini elde etmeni sağlar.
+🔹 Bu şekilde, hierarchy[0] ile (N, 4) boyutunda bir NumPy dizisi elde edersin ve hierarchy[1], hierarchy[2] gibi indekslerle her bir konturun ilişkilerini kolayca inceleyebilirsin. 

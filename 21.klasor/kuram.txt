@@ -1,0 +1,13 @@
+-güzel bir resim
+-resmi gray yap
+-sonra bu gri tonlu resmin köşelerini yumuşatmamız gerekiyor.
+        *bunun icin cv2.bilateralFilter() kulanicaz.
+        *arabanin sinir çizgileri için aslinda
+        **ihtiyacımız olmayan sınır çzigilerini resimden olabildigince atmamız gerekiyor.
+
+-daha sonra bu resmi alıp
+                        *canny() fonksiyonunu uyuglayığ resimdeki köşeleri elde ediyoruz.
+
+-sonra bu resmi de alıp cv2.findContours() ile plakanın kontourlarını elde ediyoruz.
+-daha sonra tespit ettiğimiz plakaya maske uygulayıp kırpyoruz.
+-daha sonra o kalan plakayı da pyteseeract ile okuyoruz.

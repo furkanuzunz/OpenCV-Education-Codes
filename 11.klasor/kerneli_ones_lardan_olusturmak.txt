@@ -1,3 +1,10 @@
+
+https://chatgpt.com/share/67c9f614-f384-800b-a9e6-8c1c3a1e7b2a
+bu sohbeti oku soruları güzelce, kırmızı renk mevzusundan sonrası özellikle
+
+
+
+
 Kısa Cevap:
 cv2.dilate() fonksiyonu, kernelin gezdiği bölgedeki en az bir piksel beyazsa (255), merkez pikseli de beyaz yapar.
 
