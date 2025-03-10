@@ -39,7 +39,7 @@ for i in range(len(contours)):
 #buradan oku
 
 cv2.imshow("son",backGround)
-
+cv2.imshow("org",img)
 
 
 # cv2.imshow("img",img)

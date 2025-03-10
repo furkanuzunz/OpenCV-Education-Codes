@@ -29,7 +29,7 @@ defects = cv2.convexityDefects(cntr,hull) #bu fonksiyon aslidna 4 tane deger don
 #f = furthest point-------bu aslinda ice bükülmüş köşelerin oldugu yer
 # d = distance-----------------
 #defects boyutunun sifirinci elemanı kadar
-for  i in range(defects.shape[0]):
+for  i in range(defects.shape[0]): #bu dongu , iç bükey sayilari sayisi kadar döner.
     s,e,f,d = defects[i,0]
     start_point = tuple(cntr[s][0])
     end_po = tuple(cntr[e][0])
@@ -38,6 +38,9 @@ for  i in range(defects.shape[0]):
     cv2.circle(img,farthest_point,5,[0,255,0],-1)
 
 # https://chatgpt.com/share/67b8d4f8-e4a4-800b-8b3b-273747e5c6d5 bu mevzuyu anlatan
+
+#guncel https://chatgpt.com/share/67cde47e-f910-800b-bfd2-1dc41349a7df
+
 
 
 cv2.imshow("img",img)
