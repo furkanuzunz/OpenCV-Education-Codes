@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 
 image = cv2.imread("C:\\Users\\Furkan\\Desktop\\OpenCVegitim\\odev3\\para.jpg")
-
 gray_img = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 gray_img = cv2.GaussianBlur(gray_img,(5,5),0)
 
@@ -28,11 +27,11 @@ for cnt in contours:
         #area = cv2.contourArea(cnt)
         #print(area)
         i+=1
-        cv2.drawContours(image,contours,-1,(0,255,0),2)
+        cv2.drawContours(image,cnt,-1,(0,255,0),2)
         #cv2.circle(gray_img, center, r, (0, 255, 0), 2)
         #circle neden yanlis ciziliyor bir bak,sor umuda felan.
 
-cv2.putText(image, f"para sayisi: {i}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+cv2.putText(image, f"para sayisi: {i}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0,255), 2)
 
     
     
